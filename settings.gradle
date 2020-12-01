@@ -1,2 +1,4 @@
+include ':entities'
+include ':domain'
 include ':app'
 rootProject.name = "Stackoverflow-App-Example"
