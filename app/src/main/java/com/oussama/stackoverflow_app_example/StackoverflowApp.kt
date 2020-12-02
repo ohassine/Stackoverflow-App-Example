@@ -7,7 +7,6 @@ class StackoverflowApp : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
         DomainIntegration.init(this)
     }
 
