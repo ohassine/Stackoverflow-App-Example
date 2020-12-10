@@ -1,19 +1,24 @@
 package com.oussama.stackoverflow_app_example.app.features.detail
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.oussama.domain.repositories.detailRepository
+import com.oussama.domain.usecases.getUserDetails
 import com.oussama.entities.User
 import com.oussama.stackoverflow_app_example.R
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 private const val ARG_USER = "user_param"
+private const val TAG = "DetailFragment"
 
 class DetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var user: User? = null
 
+    private var user: User? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,5 +43,16 @@ class DetailFragment : Fragment() {
                     putParcelable(ARG_USER, user)
                 }
             }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        user?.let {
+            getUserDetails(it.userId, detailRepository)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ res -> Log.d(TAG, "onViewCreated: $res") }, {})
+        }
     }
 }

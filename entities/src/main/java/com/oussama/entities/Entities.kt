@@ -47,20 +47,21 @@ data class Question(
     @SerializedName("link") var link: String,
     @SerializedName("question_id") var questionId: Long,
     @SerializedName("owner") var owner: Owner
-) {
-    constructor() : this(0, 0, "", "", -1, Owner())
-}
+)
 
 data class Answer(
     @SerializedName("answer_id") var answerId: Long,
     @SerializedName("question_id") var questionId: Long,
     @SerializedName("score") var score: Long,
     @SerializedName("is_accepted") var accepted: Boolean,
-    @SerializedName("owner") var owner: Owner
-) {
-    constructor() : this(-1, -1, 0, false, Owner())
-}
+    @SerializedName("owner") var owner: Owner,
+    var questionTitle : String = ""
+)
 
-data class Owner(@SerializedName("user_id") var userId: Long) {
-    constructor() : this(-1)
-}
+data class Owner(@SerializedName("user_id") var userId: Long)
+
+data class UserDetail(
+    val questions: List<Question>,
+    val answers: List<Answer>,
+    val favorites: List<Question>
+)
