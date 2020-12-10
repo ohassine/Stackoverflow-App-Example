@@ -3,6 +3,7 @@ package com.oussama.domain.datasource
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.oussama.domain.repositories.UserRepository
+import com.oussama.domain.repositories.userRepository
 import com.oussama.entities.State
 import com.oussama.entities.User
 import io.reactivex.Completable
@@ -13,7 +14,7 @@ import io.reactivex.schedulers.Schedulers
 
 class UsersDataSource(
     private val compositeDisposable: CompositeDisposable,
-    private val userRepository: UserRepository
+    private val repository: UserRepository = userRepository
 ) : PageKeyedDataSource<Int, User>() {
 
     var state: MutableLiveData<State> = MutableLiveData()
@@ -24,7 +25,7 @@ class UsersDataSource(
         callback: LoadInitialCallback<Int, User>
     ) {
         updateState(State.LOADING)
-        compositeDisposable.add(userRepository.getUsers(1)
+        compositeDisposable.add(repository.getUsers(1)
             .subscribe({ response ->
                 updateState(State.DONE)
                 callback.onResult(response.items, null, 2)
@@ -41,7 +42,7 @@ class UsersDataSource(
 
     override fun loadAfter(params: LoadParams<Int>, callback: LoadCallback<Int, User>) {
         updateState(State.LOADING)
-        compositeDisposable.add(userRepository.getUsers(params.key)
+        compositeDisposable.add(repository.getUsers(params.key)
             .subscribe({ response ->
                 updateState(State.DONE)
                 callback.onResult(response.items, params.key + 1)

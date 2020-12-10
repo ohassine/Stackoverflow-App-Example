@@ -1,6 +1,7 @@
 package com.oussama.domain.usecases
 
 import com.oussama.domain.repositories.DetailRepository
+import com.oussama.domain.repositories.detailRepository
 import com.oussama.entities.Answer
 import com.oussama.entities.Question
 import com.oussama.entities.UserDetail
@@ -8,11 +9,11 @@ import io.reactivex.Single
 
 const val NUMBER_ITEMS_TO_SHOW = 3
 
-fun getUserDetails(userId: Long, detailRepository: DetailRepository): Single<UserDetail> {
+fun getUserDetails(userId: Long, repository: DetailRepository = detailRepository): Single<UserDetail> {
     return Single.zip(
-        detailRepository.getQuestionsByUserId(userId),
-        detailRepository.getFavoritesByUserId(userId),
-        getAnswersWithTitle(userId, detailRepository),
+        repository.getQuestionsByUserId(userId),
+        repository.getFavoritesByUserId(userId),
+        getAnswersWithTitle(userId),
         { questions, favorites, answers ->
             UserDetail(
                 questions.take(NUMBER_ITEMS_TO_SHOW),
@@ -25,20 +26,20 @@ fun getUserDetails(userId: Long, detailRepository: DetailRepository): Single<Use
 
 private fun getAnswersWithTitle(
     userId: Long,
-    detailRepository: DetailRepository
+    repository: DetailRepository = detailRepository
 ): Single<List<Answer>> {
-    return detailRepository.getAnswersByUserId(userId)
-        .flatMap { mapAnswersToAnswersWithTitle(it, detailRepository) }
+    return repository.getAnswersByUserId(userId)
+        .flatMap { mapAnswersToAnswersWithTitle(it) }
         .map { answers -> answers.filter { it.accepted } }
 
 }
 
 private fun mapAnswersToAnswersWithTitle(
     answers: List<Answer>,
-    detailRepository: DetailRepository
+    repository: DetailRepository = detailRepository
 ): Single<List<Answer>> {
     val questionsIds = answers.map { it.questionId }
-    val questions = detailRepository.getQuestionsByIds(questionsIds.joinToString(separator = ";"))
+    val questions = repository.getQuestionsByIds(questionsIds.joinToString(separator = ";"))
 
     return questions.map { createAnswer(answers, it) }
 }
