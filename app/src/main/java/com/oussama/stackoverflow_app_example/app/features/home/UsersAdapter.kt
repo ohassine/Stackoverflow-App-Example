@@ -7,7 +7,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.oussama.entities.State
 import com.oussama.entities.User
 
-class UsersAdapter(private val retry: () -> Unit) :
+class UsersAdapter(
+    private val clickListener: (user: User?) -> Unit,
+    private val retry: () -> Unit
+) :
     PagedListAdapter<User, RecyclerView.ViewHolder>(NewsDiffCallback) {
 
     private val DATA_VIEW_TYPE = 1
@@ -25,7 +28,7 @@ class UsersAdapter(private val retry: () -> Unit) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == DATA_VIEW_TYPE)
-            (holder as UsersHolder).bind(getItem(position) as User)
+            (holder as UsersHolder).bind((getItem(position) as User), clickListener)
         else
             (holder as FooterHolder).bind(state)
     }

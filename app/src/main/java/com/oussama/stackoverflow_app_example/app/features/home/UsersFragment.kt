@@ -11,7 +11,9 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.oussama.entities.State
+import com.oussama.entities.User
 import com.oussama.stackoverflow_app_example.R
+import com.oussama.stackoverflow_app_example.app.features.detail.DetailFragment
 
 
 class UsersFragment : Fragment() {
@@ -33,7 +35,7 @@ class UsersFragment : Fragment() {
         intState(view)
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recycler)
-        userAdapter = UsersAdapter { homeViewModel.retry() }
+        userAdapter = UsersAdapter({ user -> clickListener(user) }, { homeViewModel.retry() })
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = userAdapter
 
@@ -63,5 +65,9 @@ class UsersFragment : Fragment() {
 
     }
 
+    private fun clickListener(user: User?) {
+        val detailsFragment = DetailFragment.newInstance(user)
+        (activity as HomeActivity).addDetailsFragmentWithTransition(detailsFragment)
+    }
 
 }

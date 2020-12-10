@@ -12,11 +12,21 @@ import com.oussama.stackoverflow_app_example.app.features.core.loadUrl
 
 class UsersHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    fun bind(user: User?) {
+    fun bind(user: User?, clickListener: (user: User?) -> Unit) = with(itemView) {
+
         user?.let {
-            itemView.findViewById<TextView>(R.id.name).text = user.displayName
-            itemView.findViewById<TextView>(R.id.reputation).text = user.reputation.toString()
-            user.profileImage.let { itemView.findViewById<ImageView>(R.id.userAvatar).loadUrl(it) }
+            findViewById<TextView>(R.id.name).text = user.displayName
+            findViewById<TextView>(R.id.reputation).text = user.reputation.toString()
+            user.profileImage.let {
+                if (it != null) {
+                    findViewById<ImageView>(R.id.userAvatar).loadUrl(it)
+                }
+            }
+        }
+
+
+        setOnClickListener {
+            clickListener(user)
         }
     }
 
