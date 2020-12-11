@@ -1,24 +1,23 @@
 package com.oussama.stackoverflow_app_example.app.features.detail
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.oussama.domain.repositories.detailRepository
-import com.oussama.domain.usecases.getUserDetails
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.oussama.entities.State
 import com.oussama.entities.User
 import com.oussama.stackoverflow_app_example.R
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 private const val ARG_USER = "user_param"
-private const val TAG = "DetailFragment"
 
 class DetailFragment : Fragment() {
 
     private var user: User? = null
+    private val detailViewModel: DetailViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +30,6 @@ class DetailFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_detail, container, false)
     }
 
@@ -49,10 +47,18 @@ class DetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         user?.let {
-            getUserDetails(it.userId, detailRepository)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ res -> Log.d(TAG, "onViewCreated: $res") }, {})
+            detailViewModel.addItem(it)
+            detailViewModel.addItem(State.LOADING)
+            detailViewModel.getDetails(it.userId)
         }
+
+        val recyclerView: RecyclerView = view.findViewById(R.id.recycler)
+        val userAdapter = DetailAdapter()
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = userAdapter
+
+        detailViewModel.details.observe(viewLifecycleOwner, {
+            userAdapter.setList(it)
+        })
     }
 }

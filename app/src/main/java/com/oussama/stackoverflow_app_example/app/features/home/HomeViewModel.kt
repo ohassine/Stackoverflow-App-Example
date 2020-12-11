@@ -8,7 +8,6 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.oussama.domain.datasource.UsersDataSource
 import com.oussama.domain.datasource.UsersDataSourceFactory
-import com.oussama.domain.repositories.userRepository
 import com.oussama.entities.State
 import com.oussama.entities.User
 import io.reactivex.disposables.CompositeDisposable
@@ -21,7 +20,7 @@ class HomeViewModel : ViewModel() {
     private val pageSize = 5
 
     private val usersDataSourceFactory: UsersDataSourceFactory =
-        UsersDataSourceFactory(disposable, userRepository)
+        UsersDataSourceFactory(disposable)
 
     init {
         val config = PagedList.Config.Builder()
