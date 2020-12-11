@@ -12,7 +12,7 @@ const val HEADING_VIEW_TYPE = 2
 const val USER_VIEW_TYPE = 3
 const val LOADING_VIEW_TYPE = 4
 
-class DetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class DetailAdapter(private val clickListener : (String) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var items: MutableList<Any> = ArrayList()
 
@@ -30,9 +30,9 @@ class DetailAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
         when (getItemViewType(position)) {
             DATA_VIEW_TYPE -> {
                 if (items[position] is Question)
-                    (holder as DetailHolder).bindQuestion(items[position] as Question)
+                    (holder as DetailHolder).bindQuestion((items[position] as Question), clickListener)
                 else
-                    (holder as DetailHolder).bindAnswer(items[position] as Answer)
+                    (holder as DetailHolder).bindAnswer((items[position] as Answer), clickListener)
             }
             HEADING_VIEW_TYPE -> {
                 (holder as HeadingHolder).bind(items[position].toString())

@@ -11,20 +11,21 @@ import com.oussama.stackoverflow_app_example.R
 
 class DetailHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-    fun bindQuestion(item: Question) {
+    fun bindQuestion(item: Question,  clickListener: (String) -> Unit) {
         with(itemView) {
             findViewById<TextView>(R.id.itemTitle).text = item.title
             findViewById<TextView>(R.id.itemPoints).text = item.score.toString() + "points"
             findViewById<TextView>(R.id.itemViewed).text = "Viewed :" + item.viewCount.toString()
+            setOnClickListener { clickListener(item.link) }
         }
     }
 
-    fun bindAnswer(item: Answer) {
+    fun bindAnswer(item: Answer, clickListener: (String) -> Unit) {
         with(itemView) {
             findViewById<TextView>(R.id.itemTitle).text = item.questionTitle
             findViewById<TextView>(R.id.itemPoints).text = item.score.toString() + " points"
             findViewById<TextView>(R.id.itemViewed).visibility = View.GONE
-
+            setOnClickListener { clickListener("https://stackoverflow.com/a/${item.answerId}")}
         }
     }
 

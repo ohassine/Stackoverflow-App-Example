@@ -1,5 +1,7 @@
 package com.oussama.stackoverflow_app_example.app.features.detail
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +20,13 @@ class DetailFragment : Fragment() {
 
     private var user: User? = null
     private val detailViewModel: DetailViewModel by viewModels()
+
+    private  val detailAdapter by lazy {
+        DetailAdapter{
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(it))
+            startActivity(browserIntent)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,12 +62,11 @@ class DetailFragment : Fragment() {
         }
 
         val recyclerView: RecyclerView = view.findViewById(R.id.recycler)
-        val userAdapter = DetailAdapter()
         recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = userAdapter
+        recyclerView.adapter = detailAdapter
 
         detailViewModel.details.observe(viewLifecycleOwner, {
-            userAdapter.setList(it)
+            detailAdapter.setList(it)
         })
     }
 }
