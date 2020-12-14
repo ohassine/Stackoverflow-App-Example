@@ -41,20 +41,20 @@ data class User(
 }
 
 data class Question(
-    @SerializedName("view_count") var viewCount: Long,
-    @SerializedName("score") var score: Long,
-    @SerializedName("title") var title: String,
-    @SerializedName("link") var link: String,
-    @SerializedName("question_id") var questionId: Long,
-    @SerializedName("owner") var owner: Owner
+    @SerializedName("view_count") var viewCount: Long = 0,
+    @SerializedName("score") var score: Long = 0,
+    @SerializedName("title") var title: String = "",
+    @SerializedName("link") var link: String = "",
+    @SerializedName("question_id") var questionId: Long = 0,
+    @SerializedName("owner") var owner: Owner? = null
 )
 
 data class Answer(
-    @SerializedName("answer_id") var answerId: Long,
-    @SerializedName("question_id") var questionId: Long,
-    @SerializedName("score") var score: Long,
-    @SerializedName("is_accepted") var accepted: Boolean,
-    @SerializedName("owner") var owner: Owner,
+    @SerializedName("answer_id") var answerId: Long = 0,
+    @SerializedName("question_id") var questionId: Long = 0 ,
+    @SerializedName("score") var score: Long =0 ,
+    @SerializedName("is_accepted") var accepted: Boolean = false,
+    @SerializedName("owner") var owner: Owner? = null,
     var questionTitle : String = ""
 )
 
