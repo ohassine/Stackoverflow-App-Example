@@ -5,12 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.oussama.stackoverflow_app_example.R
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(R.layout.activity_main) {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
         supportFragmentManager
             .takeIf { savedInstanceState == null }

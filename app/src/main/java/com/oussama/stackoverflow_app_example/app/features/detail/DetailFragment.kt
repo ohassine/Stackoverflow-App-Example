@@ -16,7 +16,7 @@ import com.oussama.stackoverflow_app_example.R
 
 private const val ARG_USER = "user_param"
 
-class DetailFragment : Fragment() {
+class DetailFragment : Fragment(R.layout.fragment_detail) {
 
     private var user: User? = null
     private val detailViewModel: DetailViewModel by viewModels()
@@ -33,13 +33,6 @@ class DetailFragment : Fragment() {
         arguments?.let {
             user = it.getParcelable(ARG_USER)
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_detail, container, false)
     }
 
     companion object {
