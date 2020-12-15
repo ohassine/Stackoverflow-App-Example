@@ -12,15 +12,13 @@ import com.oussama.entities.State
 import com.oussama.entities.User
 import io.reactivex.disposables.CompositeDisposable
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(
+    var users: LiveData<PagedList<User>> = MutableLiveData(),
+    private var disposable : CompositeDisposable = CompositeDisposable(),
+    private val usersDataSourceFactory: UsersDataSourceFactory = UsersDataSourceFactory(disposable)
+) : ViewModel() {
 
-
-    var users: LiveData<PagedList<User>> = MutableLiveData()
-    var disposable = CompositeDisposable()
     private val pageSize = 5
-
-    private val usersDataSourceFactory: UsersDataSourceFactory =
-        UsersDataSourceFactory(disposable)
 
     init {
         val config = PagedList.Config.Builder()

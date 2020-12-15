@@ -51,7 +51,7 @@ class GetDetailsKtTest{
     @Test
     fun `createAnswer() with matching Ids then return list of answers with the valid title`(){
         val question = "How to declare lazy value using Kotlin"
-        val answers = listOf(Answer(answerId = 44))
+        val answers = listOf(Answer(answerId = 88, questionId = 44))
         val questions = listOf(Question(questionId = 44, title = question))
 
         val result = createAnswer(answers, questions)

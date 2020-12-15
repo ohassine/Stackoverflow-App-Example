@@ -46,7 +46,7 @@ private fun mapAnswersToAnswersWithTitle(
 
 fun createAnswer(answers: List<Answer>, questions: List<Question>): List<Answer> {
     return answers.map {
-        val question = questions.find { question -> question.questionId == it.answerId }
+        val question = questions.find { question -> question.questionId == it.questionId }
         Answer(
             it.answerId,
             it.questionId,

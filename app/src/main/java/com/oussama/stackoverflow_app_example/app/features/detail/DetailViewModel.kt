@@ -5,14 +5,16 @@ import androidx.lifecycle.ViewModel
 import com.oussama.domain.usecases.getUserDetails
 import com.oussama.entities.State
 import com.oussama.entities.UserDetail
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class DetailViewModel : ViewModel() {
-
+class DetailViewModel(
+    private val getCompleteDetails: (Long) -> Single<UserDetail> = { getUserDetails(it) },
+    private var compositeDisposable: CompositeDisposable = CompositeDisposable(),
     var details: MutableLiveData<MutableList<Any>> = MutableLiveData()
-    var compositeDisposable = CompositeDisposable()
+) : ViewModel() {
 
     init {
         details.value = ArrayList()
@@ -25,7 +27,7 @@ class DetailViewModel : ViewModel() {
 
     fun getDetails(userId: Long) {
         compositeDisposable.add(
-            getUserDetails(userId)
+            getCompleteDetails(userId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
