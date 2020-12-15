@@ -6,16 +6,16 @@ import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.oussama.domain.datasource.UsersDataSource
-import com.oussama.domain.datasource.UsersDataSourceFactory
 import com.oussama.entities.State
 import com.oussama.entities.User
 import io.reactivex.disposables.CompositeDisposable
 
 class HomeViewModel(
     var users: LiveData<PagedList<User>> = MutableLiveData(),
-    private var disposable : CompositeDisposable = CompositeDisposable(),
-    private val usersDataSourceFactory: UsersDataSourceFactory = UsersDataSourceFactory(disposable)
+    private var disposable: CompositeDisposable = CompositeDisposable(),
+    private val usersPagedSourceFactory: UsersPagedSourceFactory = UsersPagedSourceFactory(
+        disposable
+    )
 ) : ViewModel() {
 
     private val pageSize = 5
@@ -26,16 +26,16 @@ class HomeViewModel(
             .setInitialLoadSizeHint(pageSize * 2)
             .setEnablePlaceholders(false)
             .build()
-        users = LivePagedListBuilder(usersDataSourceFactory, config).build()
+        users = LivePagedListBuilder(usersPagedSourceFactory, config).build()
     }
 
     fun getState(): LiveData<State> = Transformations.switchMap(
-        usersDataSourceFactory.newsDataSourceLiveData,
-        UsersDataSource::state
+        usersPagedSourceFactory.newsDataSourceLiveData,
+        UsersPagedSource::state
     )
 
     fun retry() {
-        usersDataSourceFactory.newsDataSourceLiveData.value?.retry()
+        usersPagedSourceFactory.newsDataSourceLiveData.value?.retry()
     }
 
     fun isListEmpty(): Boolean {
