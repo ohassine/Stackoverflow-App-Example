@@ -7,9 +7,8 @@ Sample app that shows a list of top stackoverflow users and their details ( top 
 * [MVVM](https://medium.com/upday-devs/android-architecture-patterns-part-3-model-view-viewmodel-e7eeee76b73b) as a architecture pattern
 * [Retrofit](https://square.github.io/retrofit/) for API calls
 * [Paging Library](https://developer.android.com/topic/libraries/architecture/paging) from  [Android Jetpack](https://developer.android.com/jetpack)
-* [RxJava](https://github.com/ReactiveX/RxJava) with complex example
+* [RxJava](https://github.com/ReactiveX/RxJava) with complex example:
 * Some Unit Test
 
-
-![alt text](https://im4.ezgif.com/tmp/ezgif-4-ef11260ef068.gif)
+![alt text](https://media4.giphy.com/media/0DNlgBQiESDFpRWzPm/giphy.gif)
 
